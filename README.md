@@ -2,8 +2,8 @@
 Go package which gracefully stops servers
 
 [![GoDoc](https://godoc.org/github.com/TsvetanMilanov/go-graceful-server-shutdown/gss?status.svg)](https://godoc.org/github.com/TsvetanMilanov/go-graceful-server-shutdown/gss)
-![Go](https://github.com/TsvetanMilanov/go-graceful-server-shutdown/workflows/Go/badge.svg?branch=master)
-![Create Release](https://github.com/TsvetanMilanov/go-graceful-server-shutdown/workflows/Create%20Release/badge.svg)
+![Go](https://github.com/TsvetanMilanov/go-graceful-server-shutdown/workflows/Go/badge.svg?branch=master&event=push)
+![Create Release](https://github.com/TsvetanMilanov/go-graceful-server-shutdown/workflows/Create%20Release/badge.svg?event=push)
 
 ## Quick Start
 ```Go
