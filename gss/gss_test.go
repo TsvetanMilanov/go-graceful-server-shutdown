@@ -130,3 +130,26 @@ func TestInfiniteTimeout(t *testing.T) {
 	assert.NoError(t, <-ch)
 	assert.NoError(t, <-reqCh)
 }
+
+func TestStopChannel(t *testing.T) {
+	stopChan := make(chan bool)
+	addr := fmt.Sprintf(":%d", getFreePort())
+	settings := &Settings{
+		Addr:            addr,
+		ShutdownChannel: stopChan,
+	}
+
+	ch := startTestServerWithSettings(settings)
+
+	reqCh := make(chan error)
+	go func() {
+		reqErr := sendRequest(addr, 1)
+		reqCh <- reqErr
+	}()
+
+	shortWait()
+	stopChan <- true
+
+	assert.NoError(t, <-ch)
+	assert.NoError(t, <-reqCh)
+}

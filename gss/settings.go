@@ -7,6 +7,7 @@ import "os"
 type Settings struct {
 	Addr                   string
 	SignalsToWatch         []os.Signal
+	ShutdownChannel        chan bool
 	ShutdownTimeoutSeconds *int64
 }
 
@@ -32,4 +33,12 @@ func (s *Settings) getShutdownTimeoutSeconds() int64 {
 	}
 
 	return DefaultShutdownTimeoutSeconds
+}
+
+func (s *Settings) getShutdownChannel() chan bool {
+	if s.ShutdownChannel == nil {
+		s.ShutdownChannel = make(chan bool)
+	}
+
+	return s.ShutdownChannel
 }

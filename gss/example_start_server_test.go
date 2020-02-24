@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"syscall"
+	"time"
 
 	"github.com/TsvetanMilanov/go-graceful-server-shutdown/gss"
 )
@@ -45,4 +46,27 @@ func ExampleStartCustomServerWithSettings() {
 	err := gss.StartCustomServerWithSettings(srv, settings)
 
 	fmt.Println(err)
+}
+
+func ExampleStartServerWithSettings_shutdownchannel() {
+	shutdownChannel := make(chan bool)
+	settings := &gss.Settings{
+		ShutdownChannel: shutdownChannel,
+	}
+
+	serverChannel := make(chan error)
+	go func() {
+		err := gss.StartServerWithSettings(http.DefaultServeMux, settings)
+
+		serverChannel <- err
+	}()
+
+	time.Sleep(500 * time.Millisecond)
+
+	shutdownChannel <- true
+
+	err := <-serverChannel
+
+	fmt.Println(err)
+	// Output: <nil>
 }

@@ -39,12 +39,15 @@ func StartCustomServerWithSettings(srv *http.Server, settings *Settings) error {
 	signal.Notify(quit, settings.getSignalsToWatch()...)
 
 	select {
+	case <-settings.getShutdownChannel():
+		signal.Stop(quit)
+		break
 	case <-quit:
 		signal.Stop(quit)
 		break
 	case err := <-startServerChan:
+		signal.Stop(quit)
 		if err != nil {
-			signal.Stop(quit)
 			close(quit)
 			return err
 		}
